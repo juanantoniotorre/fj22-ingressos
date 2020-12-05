@@ -1,5 +1,7 @@
 package br.com.caelum.ingresso.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -30,16 +32,30 @@ public class Sala {
 
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Lugar> lugares = new HashSet<>();
+    
+    private BigDecimal preco = BigDecimal.ZERO;
+    
+	public BigDecimal getPreco() {
+		if (this.preco != null) {
+			return preco.setScale(2, RoundingMode.HALF_UP);
+		}
+		return BigDecimal.ZERO;
+	}
 
-    /**
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	/**
      * @deprecated hibernate only
      */
     public Sala() {
 
     }
 
-    public Sala(String nome) {
+    public Sala(String nome, BigDecimal preco) {
         this.nome = nome;
+        this.preco = preco;
     }
 
     public Integer getId() {
