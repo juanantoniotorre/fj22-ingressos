@@ -3,6 +3,8 @@ package br.com.caelum.ingresso.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,25 +18,26 @@ public class Sessao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private LocalTime horario;
-	
+
 	private BigDecimal preco;
-	
+
 	@ManyToOne
 	private Sala sala;
-	
+
 	@ManyToOne
 	private Filme filme;
-	
+
 	public Sessao(LocalTime horario, Filme filme, Sala sala) {
 		this.horario = horario;
 		this.filme = filme;
 		this.sala = sala;
 		this.preco = sala.getPreco().add(filme.getPreco());
 	}
-	
-	public Sessao() {}
+
+	public Sessao() {
+	}
 
 	public Integer getId() {
 		return id;
@@ -67,7 +70,7 @@ public class Sessao {
 	public void setFilme(Filme filme) {
 		this.filme = filme;
 	}
-	
+
 	public BigDecimal getPreco() {
 		if (this.preco != null) {
 			return preco.setScale(2, RoundingMode.HALF_UP);
@@ -77,5 +80,9 @@ public class Sessao {
 
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
-	}	
+	}
+
+	public Map<String, List<Lugar>> getMapaDeLugares() {
+		return sala.getMapaDeLugares();
+	}
 }
